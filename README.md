@@ -28,3 +28,7 @@ r_ax = [...]                       # units: rad/s/s
 r_ay = [...]                       # units: rad/s/s
 
 r_az = [...]                       # units: rad/s/s
+
+Ouput
+
+DAMAGE
