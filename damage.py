@@ -35,16 +35,9 @@ def calculate_damage(T, X):
     T : (n,) array_like
         Time vector
     F : (n, m) array_like
-        head rotation acceleration matrix (each row = time step, columns = DOFs)
+        head angular acceleration matrix (each row = time step, columns = DOFs)
 
-    Returns
-    -------
-    x : (n, m) ndarray
-        Displacements
-    dx : (n, m) ndarray
-        Velocities
-    d2x : (n, m) ndarray
-        Accelerations
+   
     """
 
     T = np.asarray(T)
@@ -55,9 +48,9 @@ def calculate_damage(T, X):
     m = F.shape[1]
 
     # Initialize response arrays
-    x = np.zeros((n, m))    # displacement
-    dx = np.zeros((n, m))   # velocity
-    d2x = np.zeros((n, m))  # acceleration
+    x = np.zeros((n, m))    
+    dx = np.zeros((n, m))   
+    d2x = np.zeros((n, m))  
 
     # Newmark-beta parameters (average acceleration method)
     beta1 = 0.5
@@ -89,9 +82,9 @@ def calculate_damage(T, X):
         dT = T[i] - T[i - 1]
 
         Meff = M + dT * beta1 * C + 0.5 * dT**2 * beta2 * K
-        # print(i)
+        
 
-        # Effective force
+        
         Feff = (
             F[i, :]
             - C @ (dx[i - 1, :] + dT * (1 - beta1) * d2x[i - 1, :])
@@ -102,10 +95,10 @@ def calculate_damage(T, X):
             )
         )
 
-        # Solve for acceleration
+        
         d2x[i, :] = np.linalg.solve(Meff, Feff)
 
-        # Update velocity and displacement
+        
         d2x1 = (1 - beta1) * d2x[i - 1, :] + beta1 * d2x[i, :]
         d2x2 = (1 - beta2) * d2x[i - 1, :] + beta2 * d2x[i, :]
 
@@ -121,8 +114,7 @@ def calculate_damage(T, X):
 
     return dmg_newmark
 if __name__ == '__main__':
-    # njit(float64[::1](float64[::1], float64, float64[::1, :], float64[::1, :], float64[::1, :], float64[::1, :],
-    #                   float64[::1], float64[::1], float64[::1], float64[::1]))(equation_of_motion).inspect_types()
+    
 
     def main():
         df = pd.read_excel("example_data.xlsx", sheet_name="Sheet1")
