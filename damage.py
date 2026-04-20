@@ -115,7 +115,6 @@ def calculate_damage(T, X):
     return dmg_newmark
 if __name__ == '__main__':
     
-
     def main():
         df = pd.read_excel("example_data.xlsx", sheet_name="Sheet1")
         X = df.to_numpy()
